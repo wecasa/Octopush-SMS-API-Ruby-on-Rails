@@ -16,7 +16,6 @@ module Octopush
       path = PATH_EDIT_OPTIONS
       data = user_hash.merge args
       res = request @domain, path, data
-      parse_response res.body
     end
 
     def get_balance
@@ -50,7 +49,6 @@ module Octopush
       end
 
       res = request @domain, path, data
-      parse_response res.body
     end
 
     # sub account
@@ -65,7 +63,6 @@ module Octopush
                             )
 
       res = request @domain, path, data
-      parse_response res.body
     end
 
     def credit_sub_account sub_account_email, sms_amount, sms_type
@@ -85,7 +82,6 @@ module Octopush
                         token: token)
 
       res = request @domain, path, data
-      parse_response res.body
     end
 
     private
