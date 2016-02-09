@@ -12,18 +12,6 @@ module Octopush
       @domain = @constants::DOMAIN
     end
 
-    def request domain, path, data, ssl=false
-      prefix = ssl ? 'https://' : 'http://'
-      url = prefix + domain + path
-      uri = URI url
-      req = Net::HTTP::Post.new uri.path
-      req.set_form_data data
-      res = Net::HTTP.start(uri.host, uri.port) do |http|
-        http.request(req)
-      end
-      parse_response res.body
-    end
-
     def edit_options *args
       path = PATH_EDIT_OPTIONS
       data = user_hash.merge args
@@ -43,24 +31,6 @@ module Octopush
       end
 
       h
-    end
-
-    def user_hash
-      {
-        user_login: Octopush.configuration.user_login,
-        api_key: Octopush.configuration.api_key
-      }
-    end
-
-    def parse_response response
-      parser = Nori.new
-      res_hash = parser.parse response
-      code = res_hash["octopush"]["error_code"]
-      if code != "000"
-        raise Octopush::Constants::ERRORS[code]
-      else
-        res_hash["octopush"]
-      end
     end
 
     def send_sms sms, sending_date=nil, request_keys=nil
@@ -116,6 +86,38 @@ module Octopush
 
       res = request @domain, path, data
       parse_response res.body
+    end
+
+    private
+
+    def user_hash
+      {
+        user_login: Octopush.configuration.user_login,
+        api_key: Octopush.configuration.api_key
+      }
+    end
+
+    def request domain, path, data, ssl=false
+      prefix = ssl ? 'https://' : 'http://'
+      url = prefix + domain + path
+      uri = URI url
+      req = Net::HTTP::Post.new uri.path
+      req.set_form_data data
+      res = Net::HTTP.start(uri.host, uri.port) do |http|
+        http.request(req)
+      end
+      parse_response res.body
+    end
+
+    def parse_response response
+      parser = Nori.new
+      res_hash = parser.parse response
+      code = res_hash["octopush"]["error_code"]
+      if code != "000"
+        raise Octopush::Constants::ERRORS[code]
+      else
+        res_hash["octopush"]
+      end
     end
 
     def get_request_sha1_string request_keys, data
