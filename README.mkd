@@ -1,0 +1,3 @@
+# octopush-ruby
+
+A ruby library for use [Octopush API](http://www.octopush.com/en/sms-api).
