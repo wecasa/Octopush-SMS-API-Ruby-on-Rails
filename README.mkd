@@ -1,3 +1,74 @@
 # octopush-ruby
 
 A ruby library for use [Octopush API](http://www.octopush.com/en/sms-api).
+
+## Installation
+
+You can install via
+```bash
+gem install octopush-ruby
+```
+or if you are using bundler, by adding to your Gemfile
+```ruby
+gem 'octopush-ruby'
+```
+
+## Usage
+
+### Setup user
+
+First you need to setup an user login and api key to use with octopush.
+You can register at [octopush.com](http://www.octopush.com/en/registration) to get one
+
+```ruby
+require 'octopush-ruby'
+
+# setup your own credentials
+Octopush.configure do |config|
+  config.user_login = 'your_user_login'
+  config.api_key = 'your_api_key'
+end
+
+# then you can initiate a new client to use
+
+client = Octopush::Client.new
+```
+
+### Send SMS
+
+```ruby
+# first needs to create a sms instance
+sms = Octopush::SMS.new
+
+# set your desired attributes
+sms.sms_text = 'some text'
+sms.sms_recipients = '+33600000000'
+sms.sms_type = 'FR'
+
+# then just send the sms with the client you created before
+client.send_sms(sms)
+```
+
+### Check Balance
+
+```ruby
+client.get_balance
+```
+
+### Update user options
+
+```ruby
+client.edit_options({answer_email: 'some@email.com', sms_alert_type: 'FR'})
+```
+
+### Create sub account
+
+```ruby
+client.create_sub_account('Name', 'LastName', 'Raison', '234', 'FR')
+```
+
+### Credit sub account
+
+```ruby
+client.credit_sub_account('sub_account@email.com', '500', 'FR')
+```

@@ -19,7 +19,7 @@ module Octopush
     #   {answer_email: 'an_email@domain.com'}
     def edit_options *args
       path = @constants::PATH_EDIT_OPTIONS
-      data = user_hash.merge args
+      data = user_hash.merge args[0]
       res = request @domain, path, data
     end
 
