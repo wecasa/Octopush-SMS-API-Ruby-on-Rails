@@ -13,13 +13,19 @@ module Octopush
     PATH_OSTP = API_PATH + '/open_single_temp_session'
     PATH_EDIT_OPTIONS = API_PATH + '/edit_options'
     PATH_GET_USER_INFO = API_SUB_PATH + '/get_user_info'
-    SMS_STANDARD = 'XXX'
-    SMS_WORLD = 'WWW'
-    SMS_PREMIUM = 'FR'
-    INSTANTANE = 1
-    DIFFERE = 2
-    SIMULATION = 'simu'
-    REEL = 'real'
+    SMS_TYPES = {
+      'SMS_STANDARD' => 'XXX',
+      'SMS_WORLD' => 'WWW',
+      'SMS_PREMIUM' => 'FR'
+    }
+    SMS_MODES = {
+      'INSTANTANE' => 1,
+      'DIFFERE' => 2
+    }
+    REQUEST_MODES = {
+      'SIMULATION' => 'simu',
+      'REEL' => 'real'
+    }
     ERRORS = {
       '100'=> 'POST request missing.',
       '101'=> 'Incorrect login details.',
@@ -79,6 +85,22 @@ module Octopush
       '308'=> 'Error of file.',
       '500'=> 'Impossible to process the requested action',
       '501'=> 'Connection error. Please contact our customer support'
+    }
+    REQUEST_KEYS = {
+      'T'	 => 'sms_text',
+      'R'	 => 'sms_recipients',
+      'M'	 => 'sms_mode',
+      'Y'	 => 'sms_type',
+      'S'	 => 'sms_sender',
+      'D'	 => 'sms_date',
+      'a'	 => 'recipients_first_names',
+      'b'	 => 'recipients_last_names',
+      'c'	 => 'sms_fields_1',
+      'd'	 => 'sms_fields_2',
+      'e'	 => 'sms_fields_3',
+      'W'	 => 'with_replies',
+      'N'	 => 'transactional',
+      'Q'	 => 'request_id'
     }
   end
 end
