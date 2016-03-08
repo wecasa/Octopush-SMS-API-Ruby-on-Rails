@@ -38,6 +38,14 @@ module Octopush
       h
     end
 
+    # Returns credit balance as a number of Euros left on account.
+    # see http://www.octopush.com/en/api-sms-doc/get-credit
+    def get_credit
+      path = @constants::PATH_CREDIT
+      data = user_hash
+      request @domain, path, data
+    end
+
     # send a sms
     #   sms - a Octopush::SMS instance
     #   sending_date - a date to send sms, required if sms_mode is DIFFERE,
@@ -52,7 +60,7 @@ module Octopush
 
       if data[:sms_mode] == @constants::SMS_MODES['DIFFERE']
         raise 'Need specify sending_date for DIFFERE mode' if sending_date.nil?
-        data = data.merge(sending_date: sending_date)
+        data = data.merge(sending_time: sending_date)
       end
 
       if !request_keys.nil?
@@ -110,15 +118,18 @@ module Octopush
       {
         user_login: Octopush.configuration.user_login,
         api_key: Octopush.configuration.api_key
+        # sending_time: DateTime.now
       }
     end
 
     def request domain, path, data, ssl=false
       prefix = ssl ? 'https://' : 'http://'
       url = prefix + domain + path
+      data_str = []
+      data.each { |k,v| data_str << "#{k}=#{URI.encode(v)}" }
+      url += data_str.join('&')
       uri = URI url
       req = Net::HTTP::Post.new uri.path
-      req.set_form_data data
       res = Net::HTTP.start(uri.host, uri.port) do |http|
         http.request(req)
       end

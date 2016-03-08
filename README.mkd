@@ -1,6 +1,6 @@
 # octopush-ruby
 
-A ruby library for use [Octopush API](http://www.octopush.com/en/sms-api).
+A ruby library for use [Octopush SMS API](http://www.octopush.com/en/sms-api).
 
 ## Installation
 

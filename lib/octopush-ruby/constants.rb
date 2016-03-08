@@ -7,6 +7,7 @@ module Octopush
     API_SUB_PATH = '/api_sub'
     PATH_SMS = API_PATH + '/sms'
     PATH_BALANCE = API_PATH + '/balance'
+    PATH_CREDIT = API_PATH + '/credit'
     PATH_SUB_ACCOUNT = API_SUB_PATH + '/add_sub_account'
     PATH_CREDIT_SUB_ACCOUNT_TOKEN = API_SUB_PATH + '/credit_sub_account_get_session'
     PATH_CREDIT_SUB_ACCOUNT = API_SUB_PATH + '/credit_sub_account'
@@ -24,7 +25,7 @@ module Octopush
     }
     REQUEST_MODES = {
       'SIMULATION' => 'simu',
-      'REEL' => 'real'
+      'REAL' => 'real'
     }
     ERRORS = {
       '100'=> 'POST request missing.',

@@ -17,5 +17,9 @@ module Octopush
 
       hash
     end
+
+    def set_simulation_mode
+      self.request_mode = @contants::REQUEST_MODES['SIMULATION']
+    end
   end
 end
