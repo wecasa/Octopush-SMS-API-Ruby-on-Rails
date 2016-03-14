@@ -1,12 +1,17 @@
 require 'net/http'
 require 'nori'
 require 'digest/sha1'
+require 'httparty'
 require 'octopush-ruby/sms'
+require 'octopush-ruby/error/configuration_error'
+require 'octopush-ruby/error/request_error'
+require 'octopush-ruby/error/response_code_error'
+require 'octopush-ruby/error/response_error'
 
 module Octopush
   class Client
     def initialize
-      raise "Should set user configuration before use" if Octopush.configuration.nil?
+      raise Octopush::ConfigurationError.new("Should set user configuration before use") if Octopush.configuration.nil?
 
       @constants = Octopush::Constants
       @domain = @constants::DOMAIN
@@ -127,13 +132,14 @@ module Octopush
       url = prefix + domain + path
       data_str = []
       data.each { |k,v| data_str << "#{k}=#{URI.encode(v)}" }
+      url += '/?'
       url += data_str.join('&')
-      uri = URI url
-      req = Net::HTTP::Post.new uri.path
-      res = Net::HTTP.start(uri.host, uri.port) do |http|
-        http.request(req)
+      res = HTTParty.post(url)
+      if res.code != 200
+        Octopush::ResponseError.new "Server returned with #{res.code} status code"
+      else
+        parse_response res.body
       end
-      parse_response res.body
     end
 
     # octopush api returns a xml after each request.
@@ -143,7 +149,7 @@ module Octopush
       res_hash = parser.parse response
       code = res_hash["octopush"]["error_code"]
       if code != "000"
-        raise Octopush::Constants::ERRORS[code]
+        raise Octopush::ResponseCodeError.new Octopush::Constants::ERRORS[code]
       else
         res_hash["octopush"]
       end

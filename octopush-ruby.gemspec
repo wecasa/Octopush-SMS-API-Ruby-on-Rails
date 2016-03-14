@@ -11,5 +11,6 @@ Gem::Specification.new do |s|
   s.files = `git ls-files`.split("\n")
 
   s.add_runtime_dependency "nori"
+  s.add_runtime_dependency "httparty", "~> 0.13.7"
   s.add_development_dependency "cutest"
 end
