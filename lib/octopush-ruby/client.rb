@@ -127,7 +127,7 @@ module Octopush
       }
     end
 
-    def request domain, path, data, ssl=false
+    def request domain, path, data, ssl=true
       prefix = ssl ? 'https://' : 'http://'
       url = prefix + domain + path
       data_str = []
