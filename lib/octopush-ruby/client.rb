@@ -130,11 +130,7 @@ module Octopush
     def request domain, path, data, ssl=true
       prefix = ssl ? 'https://' : 'http://'
       url = prefix + domain + path
-      data_str = []
-      data.each { |k,v| data_str << "#{k}=#{URI.encode(v)}" }
-      url += '/?'
-      url += data_str.join('&')
-      res = HTTParty.post(url)
+      res = HTTParty.post(url, body: data)
       if res.code != 200
         Octopush::ResponseError.new "Server returned with #{res.code} status code"
       else
