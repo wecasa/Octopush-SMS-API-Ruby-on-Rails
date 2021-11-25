@@ -132,7 +132,7 @@ module Octopush
       url = prefix + domain + path
       res = HTTParty.post(url, body: data)
       if res.code != 200
-        Octopush::ResponseError.new "Server returned with #{res.code} status code"
+        raise Octopush::ResponseError, "Server returned with #{res.code} status code"
       else
         parse_response res.body
       end
